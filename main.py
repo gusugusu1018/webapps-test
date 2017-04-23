@@ -2,28 +2,24 @@
 from flask import Flask, render_template, request, redirect, url_for
 import numpy as np
 
-# 自身の名称を app という名前でインスタンス化する
+import json
+import plotly
+import plotly.graph_objs as go
+
+import pandas as pd
+import numpy as np
+
 app = Flask(__name__)
+counter = 0
+Suki = 0
+Bimyo = 0
+Kirai = 0
 
-# メッセージをランダムに表示するメソッド
-def picked_up():
-    messages = [
-        "こんにちは、あなたの名前を入力してください",
-        "やあ！お名前は何ですか？",
-        "あなたの名前を教えてね"
-    ]
-    # NumPy の random.choice で配列からランダムに取り出し
-    return np.random.choice(messages)
-
-# ここからウェブアプリケーション用のルーティングを記述
-# index にアクセスしたときの処理
 @app.route('/')
 def index():
     title = "ようこそ"
-    message = picked_up()
-    # index.html をレンダリングする
     return render_template('index.html',
-                           message=message, title=title)
+                           title=title)
 
 # /post にアクセスしたときの処理
 @app.route('/post', methods=['GET', 'POST'])
@@ -39,6 +35,59 @@ def post():
         # エラーなどでリダイレクトしたい場合はこんな感じで
         return redirect(url_for('index'))
 
+# /get にアクセスしたときの処理
+@app.route('/get', methods=['GET', 'POST'])
+def get():
+    title = "こんにちは"
+    global counter
+    global Suki
+    global Bimyo
+    global Kirai
+    counter += 1
+    if request.method == 'GET':
+        # リクエストフォームから「fun」を取得して
+        howlike = request.args.get('fun', '')
+        print(howlike)
+        if howlike == 'Y':
+            Suki += 1
+        elif howlike == 'X':
+            Bimyo += 1
+        elif howlike == 'N':
+            Kirai += 1
+
+        graphs = [
+            dict(
+                data=[
+                    dict(
+                        labels=['Suki', 'Bmyo', 'Kirai'],
+                        values=[Suki, Bimyo, Kirai],
+                        type='pie'
+                    ),
+                ],
+                layout=dict(
+                    title='We love Microsoft'
+                )
+            )
+        ]
+        # Add "ids" to each of the graphs to pass up to the client
+        # for templating
+        ids = ['graph-{}'.format(i) for i, _ in enumerate(graphs)]
+
+        # Convert the figures to JSON
+        # PlotlyJSONEncoder appropriately converts pandas, datetime, etc
+        # objects to their JSON equivalents
+        graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+
+        # index.html をレンダリングする
+        return render_template('index.html',
+                               howlike=howlike,
+                               ids=ids,
+                               graphJSON=graphJSON,
+                               counter=counter, 
+                               title=title)
+    else:
+        # エラーなどでリダイレクトしたい場合はこんな感じで
+        return redirect(url_for('index'))
+
 if __name__ == '__main__':
-    app.debug = True # デバッグモード有効化
     app.run()

@@ -26,4 +26,26 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   </body>
+  <footer>
+    <!-- D3.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <!-- Plotly.js -->
+    <script src="https://d14fo0winaifog.cloudfront.net/plotly-basic.js"></script>
+    <!-- for radio buttons -->
+    <script type="text/javascript">
+      $('#radioBtn a').on('click', function() {
+         var sel = $(this).data('title');
+         var tog = $(this).data('toggle');
+         $('#'+tog).prop('value', sel);
+         $('a[data-toggle="'+tog+'"]').not('[data-title="'+sel+'"]').removeClass('active').addClass('notActive');
+         $('a[data-toggle="'+tog+'"][data-title="'+sel+'"]').removeClass('notActive').addClass('active');
+      })
+    </script>
+
+    <script type="text/javascript">
+    {% block grapher %}{% endblock %}
+    </script>
+</footer>
 </html>
