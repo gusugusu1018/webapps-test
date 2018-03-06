@@ -2,6 +2,24 @@
 {% block content %}
 <div class="form-group">
     <label for="fun" class="col-sm-4 col-md-4 control-label text-right"><h1> Microsoftは好きですか?</h1></label>
+<!--
+-->
+    <div class="col-sm-7 col-md-7">
+        <div class="input-group">
+            <form action="/get" method="GET">
+                <div id="radioBtn" class="btn-group">
+                    <a class="btn btn-primary btn-sm active" data-toggle="fun" data-title="Y">Suki</a>
+                    <a class="btn btn-primary btn-sm notActive" data-toggle="fun" data-title="X">Bimyo</a>
+                    <a class="btn btn-primary btn-sm notActive" data-toggle="fun" data-title="N">Kirai</a>
+                </div>
+                <input type="hidden" name="fun" id="fun">
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!--
+-->
 <div class="form">
   <div class="container">
     <div class="row">

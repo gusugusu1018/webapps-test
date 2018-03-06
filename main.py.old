@@ -49,10 +49,6 @@ def get():
             Bimyo += 1
         elif howlike == 'N':
             Kirai += 1
-        elif howlike == 'C':
-            Suki=0
-            Bimyo=0
-            Kirai=0
 
         graphs = [
             dict(
