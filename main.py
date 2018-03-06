@@ -58,13 +58,13 @@ def get():
             dict(
                 data=[
                     dict(
-                        labels=['Suki', 'Bmyo', 'Kirai'],
+                        labels=['有罪', 'どちらでもない', '無罪'],
                         values=[Suki, Bimyo, Kirai],
                         type='pie'
                     ),
                 ],
                 layout=dict(
-                    title='We love Microsoft'
+                    title='判決'
                 )
             )
         ]
